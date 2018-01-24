@@ -20,6 +20,8 @@ endif()
 
 set(INSTALL_DIRS ${CMAKE_BINARY_DIR} CACHE FILEPATH "install dirs are now set " FORCE)
 option(TEST_OPTION "test option var -> " FALSE)
+
+
 function(install_lib_core target)
     message("add lib target "
             ${target}

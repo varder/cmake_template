@@ -10,19 +10,24 @@ endif()
 
 include(install_helpers.cmake)
 
+set(SDL_DIR "${CMAKE_SOURCE_DIR}/deps/SDL2")
+message("got sdl dir " ${SDL_DIR})
+file (COPY ${SDL_DIR}/lib/x64/SDL2.lib
+     DESTINATION "${CMAKE_BINARY_DIR}"
+     )
+file (COPY "${SDL_DIR}/lib/x64/SDL2.dll"
+  DESTINATION "${CMAKE_BINARY_DIR}/"
+  )
+file (COPY "${SDL_DIR}/lib/x64/SDL2main.lib"
+  DESTINATION "${CMAKE_BINARY_DIR}/"
+  )
+
 add_subdirectory(deps)
-add_subdirectory(geometry)
 
-include_directories(${GEOMETRY_INCLUDE_DIR})
+include_directories("${SDL_DIR}/include")
 
-add_executable(${TARGET} main.cpp)
-
-target_link_libraries(${TARGET} geometry)
-#for glut tmp this will be moved lib
-find_package(OpenGL REQUIRED)
-message("found open gl " ${OpenGL})
-include_directories(${OPENGL_INCLUDE_DIR})
-target_link_libraries(${TARGET} glad)
+add_executable(${TARGET} main.cpp sdl_functions.h)
+target_link_libraries(${TARGET} SDL2 SDL2main)
 
 
 ADD_DEPENDENCIES(${TARGET} geometry)
