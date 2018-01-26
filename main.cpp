@@ -7,12 +7,12 @@
 #define SCREEN_HEIGHT 480
 
 #include "sdl_functions.h"
-
+#include "LTexture.h"
 
 
 int main(int argc, char* args[]) {
   SDL_Window* window = NULL;
-  SDL_Renderer* g_pRenderer = 0;
+  SDL_Renderer* gRenderer = 0;
 
   SDL_Surface* screenSurface = NULL;
   SDL_Surface* image = nullptr;
@@ -27,15 +27,15 @@ int main(int argc, char* args[]) {
                 SDL_WINDOW_SHOWN
                 );
   if (window != NULL) {
-      g_pRenderer = SDL_CreateRenderer(window, -1, 0);
+      gRenderer = SDL_CreateRenderer(window, -1, 0);
   }
 
 
-  SDL_SetRenderDrawColor(g_pRenderer, 0xff, 0x88, 0xff, 0xff);
-  SDL_RenderPresent(g_pRenderer);
+      SDL_SetRenderDrawColor(gRenderer, 0xff, 0xff, 0xff, 0xff);
+  SDL_RenderPresent(gRenderer);
 
-  SDL_RenderClear(g_pRenderer);
-  SDL_RenderPresent(g_pRenderer);
+  SDL_RenderClear(gRenderer);
+  SDL_RenderPresent(gRenderer);
 
 
   screenSurface = SDL_GetWindowSurface(window);
@@ -43,8 +43,9 @@ int main(int argc, char* args[]) {
   updateSize(image, 100, 100);
 
 
-  SDL_BlitSurface(image, NULL, screenSurface, NULL);
-  SDL_UpdateWindowSurface(window);
+//  SDL_BlitSurface(image, NULL, screenSurface, NULL);
+//  SDL_UpdateWindowSurface(window);
+
 //  SDL_FillRect(screenSurface, NULL, SDL_MapRGB(screenSurface->format, 0xFF, 0xFF, 0x88));
 //  SDL_UpdateWindowSurface(window);
 //  SDL_Delay(2000);
@@ -69,9 +70,20 @@ int main(int argc, char* args[]) {
 
 
     bool quit = false;
+    SDL_Texture* texture = loadTexture(gRenderer, "car.bmp");
 
     //Event handler
     SDL_Event e;
+
+    LTexture bTexture;
+    bTexture.loadFromFile(gRenderer, "car.bmp");
+    LTexture fTexture;
+    fTexture.loadFromFile(gRenderer, "crr.bmp");
+
+
+
+    //Update the surface
+//    SDL_UpdateWindowSurface( window );
 
     //While application is running
     while( !quit )
@@ -86,13 +98,25 @@ int main(int argc, char* args[]) {
             }
         }
 
-        //Apply the image
-        SDL_BlitSurface( image, NULL, screenSurface, NULL );
+//        SDL_BlitSurface( image, NULL, screenSurface, NULL );
+//        SDL_RenderClear(gRenderer);
+//        SDL_RenderCopy(gRenderer, texture, nullptr, nullptr);
+//        SDL_RenderPresent(gRenderer);
+//        SDL_UpdateWindowSurface( window );
+//        updateSize(image, std::rand()%500, std::rand()%500);
 
-        //Update the surface
-        SDL_UpdateWindowSurface( window );
-        SDL_Delay(33);
-        updateSize(image, std::rand()%500, std::rand()%500);
+        SDL_SetRenderDrawColor( gRenderer, 0xFF, 0xFF, 0xFF, 0xFF );
+        SDL_RenderClear( gRenderer );
+
+//        testViewPort(gRenderer, texture);
+//        renderPrimitives(gRenderer);
+        bTexture.render(gRenderer, 0,0);
+        fTexture.render(gRenderer, 0, 0);
+
+        SDL_RenderPresent(gRenderer);
+
+
+        SDL_Delay(40);
     }
 
   SDL_Quit();

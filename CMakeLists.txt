@@ -26,7 +26,7 @@ add_subdirectory(deps)
 
 include_directories("${SDL_DIR}/include")
 
-add_executable(${TARGET} main.cpp sdl_functions.h)
+add_executable(${TARGET} main.cpp sdl_functions.h LTexture.h LTexture.cpp)
 target_link_libraries(${TARGET} SDL2 SDL2main)
 
 
